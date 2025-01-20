@@ -23,7 +23,9 @@ function BlogPage() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/blogs");
+        const res = await fetch(
+          "https://myportfolio-v2-z0kp.onrender.com/api/blogs"
+        );
         const data = await res.json();
 
         // sort newest first
@@ -80,7 +82,9 @@ function BlogPage() {
   // -------------------------------
   const handleIncrementView = async (blogId, notionLink) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/blogs/${blogId}`);
+      const res = await fetch(
+        `https://myportfolio-v2-z0kp.onrender.com/api/blogs/${blogId}`
+      );
       const updatedBlog = await res.json();
 
       setArticles((prevArticles) =>
@@ -101,7 +105,7 @@ function BlogPage() {
   const handleLike = async (blogId) => {
     try {
       const res = await fetch(
-        `http://localhost:5000/api/blogs/${blogId}/like`,
+        `https://myportfolio-v2-z0kp.onrender.com/api/blogs/${blogId}/like`,
         {
           method: "PATCH",
         }
@@ -136,18 +140,21 @@ function BlogPage() {
     setStatus("");
 
     try {
-      const res = await fetch("http://localhost:5000/api/blogs/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          email: contactEmail,
-          message,
-        }),
-      });
+      const res = await fetch(
+        "https://myportfolio-v2-z0kp.onrender.com/api/blogs/contact",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            firstName,
+            lastName,
+            email: contactEmail,
+            message,
+          }),
+        }
+      );
 
       const contentType = res.headers.get("content-type");
       if (contentType && contentType.includes("application/json")) {

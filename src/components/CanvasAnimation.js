@@ -1,4 +1,3 @@
-// src/components/CanvasAnimation.js
 import React, { useEffect } from "react";
 
 function CanvasAnimation() {
