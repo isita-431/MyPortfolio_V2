@@ -1,4 +1,3 @@
-// src/components/Skills.js
 function Skills() {
   return (
     <section id="skills">

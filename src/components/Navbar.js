@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { HashLink } from "react-router-hash-link";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -9,31 +11,43 @@ function Navbar() {
 
   return (
     <div>
+      {/* Desktop Nav */}
       <nav id="desktop-nav">
         <div className="nav-links-container">
           <ul className="nav-links">
             <li>
-              <a href="#about">About</a>
+              <HashLink smooth to="/#about">
+                About
+              </HashLink>
             </li>
             <li>
-              <a href="#experience">Experience</a>
+              <HashLink smooth to="/#experience">
+                Experience
+              </HashLink>
             </li>
             <li>
-              <a href="#skills">Skills</a>
+              <HashLink smooth to="/#skills">
+                Skills
+              </HashLink>
             </li>
             <li>
-              <a href="#projects">Projects</a>
+              <HashLink smooth to="/#projects">
+                Projects
+              </HashLink>
             </li>
             <li>
-              <a href="#contact">Contact</a>
+              <HashLink smooth to="/#contact">
+                Contact
+              </HashLink>
             </li>
             <li>
-              <a href="/blog">Blog</a>
+              <Link to="/blog">Blog</Link>
             </li>
           </ul>
         </div>
       </nav>
 
+      {/* Hamburger Nav for Mobile */}
       <nav id="hamburger-nav">
         <div className="logo">Isita</div>
         <div className="hamburger-menu">
@@ -47,32 +61,34 @@ function Navbar() {
           </div>
           <ul className={`menu-links ${menuOpen ? "open" : ""}`}>
             <li>
-              <a href="#about" onClick={toggleMenu}>
+              <HashLink smooth to="/#about" onClick={toggleMenu}>
                 About
-              </a>
+              </HashLink>
             </li>
             <li>
-              <a href="#experience" onClick={toggleMenu}>
+              <HashLink smooth to="/#experience" onClick={toggleMenu}>
                 Experience
-              </a>
+              </HashLink>
             </li>
             <li>
-              <a href="#skills" onClick={toggleMenu}>
+              <HashLink smooth to="/#skills" onClick={toggleMenu}>
                 Skills
-              </a>
+              </HashLink>
             </li>
             <li>
-              <a href="#projects" onClick={toggleMenu}>
+              <HashLink smooth to="/#projects" onClick={toggleMenu}>
                 Projects
-              </a>
+              </HashLink>
             </li>
             <li>
-              <a href="#contact" onClick={toggleMenu}>
+              <HashLink smooth to="/#contact" onClick={toggleMenu}>
                 Contact
-              </a>
+              </HashLink>
             </li>
             <li>
-              <a href="/blog">Blog</a>
+              <Link to="/blog" onClick={toggleMenu}>
+                Blog
+              </Link>
             </li>
           </ul>
         </div>

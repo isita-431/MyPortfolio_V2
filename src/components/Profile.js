@@ -1,4 +1,3 @@
-// src/components/Profile.js
 import React from "react";
 import CanvasAnimation from "./CanvasAnimation";
 

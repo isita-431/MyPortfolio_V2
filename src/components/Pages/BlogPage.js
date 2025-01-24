@@ -18,28 +18,49 @@ function BlogPage() {
   const [loading, setLoading] = useState(true);
 
   // -------------------------------
-  // 2) Fetch All Blogs on Mount
+  // 2) Fetch All Blogs with Local Storage Caching
   // -------------------------------
   useEffect(() => {
+    let didCancel = false;
+
     const fetchBlogs = async () => {
+      setLoading(true);
+
       try {
+        const cachedData = localStorage.getItem("blogData");
+        if (cachedData) {
+          const parsed = JSON.parse(cachedData);
+
+          setArticles(parsed);
+          setLoading(false);
+        }
+
         const res = await fetch(
           "https://myportfolio-v2-z0kp.onrender.com/api/blogs"
         );
         const data = await res.json();
 
-        // sort newest first
         const sorted = data.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
-        setArticles(sorted);
+
+        if (!didCancel) {
+          setArticles(sorted);
+          setLoading(false);
+
+          localStorage.setItem("blogData", JSON.stringify(sorted));
+        }
       } catch (error) {
         console.error("Error fetching blogs:", error);
-      } finally {
-        setLoading(false);
+        if (!didCancel) setLoading(false);
       }
     };
+
     fetchBlogs();
+
+    return () => {
+      didCancel = true;
+    };
   }, []);
 
   // -------------------------------
@@ -91,6 +112,13 @@ function BlogPage() {
         prevArticles.map((a) => (a._id === updatedBlog._id ? updatedBlog : a))
       );
 
+      localStorage.setItem(
+        "blogData",
+        JSON.stringify(
+          articles.map((a) => (a._id === updatedBlog._id ? updatedBlog : a))
+        )
+      );
+
       if (notionLink) {
         window.open(notionLink, "_blank");
       }
@@ -106,15 +134,21 @@ function BlogPage() {
     try {
       const res = await fetch(
         `https://myportfolio-v2-z0kp.onrender.com/api/blogs/${blogId}/like`,
-        {
-          method: "PATCH",
-        }
+        { method: "PATCH" }
       );
       const data = await res.json();
       if (res.ok && data.blog) {
         const updated = data.blog;
         setArticles((prev) =>
           prev.map((a) => (a._id === updated._id ? updated : a))
+        );
+
+        // Update localStorage cache with the new likeCount
+        localStorage.setItem(
+          "blogData",
+          JSON.stringify(
+            articles.map((a) => (a._id === updated._id ? updated : a))
+          )
         );
       } else {
         console.error("Failed to increment like:", data.error);
@@ -222,15 +256,6 @@ function BlogPage() {
           </Select>
         </FormControl>
       </Box>
-
-      {/* <Box id="experience-section" sx={{ my: 4 }}>
-        <Typography variant="h5" gutterBottom>
-          My Experience Section
-        </Typography>
-        <Typography variant="body1">
-          This could be your timeline, career experience, or anything you like.
-        </Typography>
-      </Box> */}
 
       <BlogList
         articles={filteredArticles}
